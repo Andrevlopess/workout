@@ -184,16 +184,20 @@ export default ({ navigation }) => {
           px={3}
           mb={2}
         >
-          <Image
+          <Pressable onPress={() => navigation.navigate('Profile')}>
+             <Image
             source={{
-              uri: "https://instagram.fvcp2-1.fna.fbcdn.net/v/t51.2885-19/337152961_207133215266787_5312857535398017100_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fvcp2-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=EmMS4hhBTwMAX8WaTpC&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfA1lGeK_V1I0mKS-p8xWgOSGQePgzfypi4vNwf4E-NpAg&oe=6427EC75&_nc_sid=8fd12b}",
+              uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
             }}
             alt="profile picture"
             borderRadius={100}
             size="sm"
+        
           />
+          </Pressable>
+         
           <Pressable onPress={() => navigation.navigate("NewWorkout")}>
-            <Icon name="plus" size={50} color="#000" />
+            <Icon name="plus-square" size={50} color="#000" />
           </Pressable>
         </Box>
         <Heading color="#000" px={3} size="2xl">
