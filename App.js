@@ -9,6 +9,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { Loading } from "./src/Components/Loading";
 import theme from "./src/Theme/CustomTheme";
+import AuthProvider from "./Contexts/AuthContext";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -22,7 +23,9 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={theme}>
+      <AuthProvider>
         <Index />
+      </AuthProvider>
     </NativeBaseProvider>
   );
 }
