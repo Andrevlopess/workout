@@ -8,7 +8,7 @@ const SignupSchema = Yup.object().shape({
       .max(50, 'Too Long!')
       .required('Required'),
       email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().email('Invalid email').required('Required'),
+      password: Yup.string().required(),
   });
 
 
@@ -26,11 +26,17 @@ export default (props) => {
         <Box>
           <Formik
           initialValues={{name:'', email: '', password: '', confirmPassword:''}}
-          
+          validationSchema={SignupSchema}
           onSubmit={values => console.log(values)}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
               <>
+                {touched.name && errors.name &&
+                  <Text color="black">Erro no nome</Text> 
+                }
+                {touched.email && errors.email &&
+                  <Text color="black">Erro no email</Text> 
+                }
                 <Input
                   variant="underlined"
                   placeholder="Nome"
