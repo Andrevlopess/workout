@@ -1,10 +1,11 @@
 import { Box, StatusBar, Text, Input, Pressable } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity } from "react-native";
 import { useContext } from "react";
 import { SafeAreaView } from "react-native";
 import { Formik } from "formik";
 import { AuthContext } from "../../Contexts/AuthContext";
 import * as Yup from "yup";
+import { api } from "../lib/axios";
 
 
 const loginSchema = Yup.object().shape({
@@ -14,8 +15,8 @@ const loginSchema = Yup.object().shape({
 });
 
 export default ({ navigation }) => {
-  
-  const { authLogin } = useContext(AuthContext);
+
+  const {authLogin} = useContext(AuthContext)
 
   return (
     <Box padding={3} flex={1}>
@@ -30,8 +31,8 @@ export default ({ navigation }) => {
         </Text>
         <Formik
           initialValues={{
-            email: "",
-            password: "",
+            email: "axios@gmail.com",
+            password: "senha123",
           }}
           validationSchema={loginSchema}
           onSubmit={(values, { resetForm }) => {
