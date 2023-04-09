@@ -3,8 +3,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/Feather";
-import { api } from "../lib/axios";
-
+import {Alert} from "react-native"
 import {useContext} from 'react'
 import { AuthContext } from "../../Contexts/AuthContext";
 
@@ -27,9 +26,15 @@ const SignupSchema = Yup.object().shape({
 });
 
 export default (props) => {
+
   const [show, setShow] = useState(false);
 
-  const {createNewUser} = useContext(AuthContext)
+  const {createNewUser, errors} = useContext(AuthContext)
+
+  if (errors) {
+    Alert.alert(errors.title, errors.message);
+  }
+
 
   return (
     <Box padding={3} flex={1}>

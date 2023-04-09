@@ -8,11 +8,11 @@ import AuthRoute from "./AuthRoute";
 export default (props) => {
 
 
- const {user} = useContext(AuthContext)
+ const {signed} = useContext(AuthContext)
 
   return (
     <NavigationContainer>
-      {user ? <AppRoutes/> : <AuthRoute/>}
+      {signed ? <AppRoutes/> : <AuthRoute/>}
     </NavigationContainer>
   );
 };
