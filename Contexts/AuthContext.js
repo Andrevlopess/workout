@@ -73,9 +73,15 @@ export default function AuthProvider({ children }) {
     }
   }
 
+  async function authLogout(){
+    await AsyncStorage.clear()
+    setUser("")
+    console.log('limpado fi ');
+  }
+
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, errors, user, createNewUser, authLogin }}
+      value={{ signed: !!user, errors, user, createNewUser, authLogin, authLogout }}
     >
       {children}
     </AuthContext.Provider>
