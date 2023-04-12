@@ -41,8 +41,8 @@ export default ({ navigation }) => {
         </Text>
         <Formik
           initialValues={{
-            email: "",
-            password: "",
+            email: "andrellopes021@gmail.com",
+            password: "senha123",
           }}
           validationSchema={loginSchema}
           onSubmit={(values, { resetForm }) => {

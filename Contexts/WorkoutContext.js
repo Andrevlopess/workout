@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { api } from "../src/lib/axios";
 import { AuthContext } from "./AuthContext";
 
@@ -7,6 +7,8 @@ export const WorkoutContext = createContext();
 export default function WorkoutProvider({ children }) {
 
     const {user} = useContext(AuthContext)
+
+    const [workout, setWorkout] = useState("")
 
     async function newWorkout(values){
      try{
@@ -18,15 +20,19 @@ export default function WorkoutProvider({ children }) {
              authorId: user.id
         })
 
-        console.log(response.data);
+        if(response.data){
+          setWorkout(response.data)
+        }
 
      }catch(err){
         console.log(err);
      }
     }
 
+    console.log(workout);
+
   return (
-    <WorkoutContext.Provider value={{newWorkout}}>
+    <WorkoutContext.Provider value={{newWorkout, workout}}>
     {children}
     </WorkoutContext.Provider>
   )

@@ -43,16 +43,6 @@ export default (props) => {
       <ScrollView>
         <Box padding={3} flex={1}>
           <Box flex={1} justifyContent="flex-end" py={5}>
-          <Box
-            paddingY={8}
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Pressable onPress={() => navigation.goBack()}>
-              <Icon name="chevron-left" size={25} color="#000" />
-            </Pressable>
-          </Box>
             <Box>
               <Text
                 marginY={40}

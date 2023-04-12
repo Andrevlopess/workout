@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [errors, setErrors] = useState("");
 
   useEffect(() => {
@@ -16,16 +16,17 @@ export default function AuthProvider({ children }) {
 
       if (storageUser && storageToken) {
         setUser(JSON.parse(storageUser));
+      }else{
+        console.log("nada no storage");
       }
     }
 
     loadStorageData();
-    
   }, []);
 
   async function createNewUser(values) {
     try {
-      setErrors("")
+      setErrors("");
       const { name, email, password } = values;
 
       const response = await api.post("/newUser", { name, email, password });
@@ -34,12 +35,16 @@ export default function AuthProvider({ children }) {
         setErrors(response.data.error);
         return;
       }
+      if (response.data.user) {
+        await AsyncStorage.setItem(
+          "@Workout:user",
+          JSON.stringify(response.data.user)
+        );
+      }
 
-      await AsyncStorage.setItem(
-        "@Workout:user",
-        JSON.stringify(response.data.user)
-      );
-      await AsyncStorage.setItem("@Workout:token", response.data.token);
+      if (response.data.token) {
+        await AsyncStorage.setItem("@Workout:token", response.data.token);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -49,23 +54,26 @@ export default function AuthProvider({ children }) {
     const { email, password } = values;
 
     try {
-      setErrors("")
+      setErrors("");
 
-      const response = await api.post("/authentication", {email,password });
-        
+      const response = await api.post("/authentication", { email, password });
+
+      console.log(response.data);
+
+      // if (response.data) {
+      //   setErrors(response.data.error);
+      //   return;
+      // }
+
+     if(response.data.user){
+        setUser(response.data.user);
+
+        await AsyncStorage.setItem(
+          "@Workout:user",
+          JSON.stringify(response.data.user)
+        );
+     }
       
-      if (response.data) {
-        setErrors(response.data.error);
-        return;
-      }
-
-
-      setUser(response.data.user);
-
-      await AsyncStorage.setItem(
-        "@Workout:user",
-        JSON.stringify(response.data.user)
-      );
 
       await AsyncStorage.setItem("@Workout:token", response.data.token);
     } catch (error) {
@@ -73,15 +81,22 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  async function authLogout(){
-    await AsyncStorage.clear()
-    setUser("")
-    console.log('limpado fi ');
+  async function authLogout() {
+    await AsyncStorage.clear();
+    setUser(null);
+    console.log("limpado fi ");
   }
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, errors, user, createNewUser, authLogin, authLogout }}
+      value={{
+        signed: !!user,
+        errors,
+        user,
+        createNewUser,
+        authLogin,
+        authLogout,
+      }}
     >
       {children}
     </AuthContext.Provider>
