@@ -1,14 +1,7 @@
-import {
-  Box,
-  StatusBar,
-  Text,
-  Input,
-  Pressable,
-  FormControl,
-} from "native-base";
+import { FormControl } from "native-base";
 import { Button, TouchableOpacity, Alert } from "react-native";
 import { useContext, useState } from "react";
-import { View } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { Formik } from "formik";
 import { AuthContext } from "../../Contexts/AuthContext";
 import * as Yup from "yup";
@@ -29,16 +22,18 @@ export default ({ navigation }) => {
   }
 
   return (
-    <Box padding={3} flex={1}>
-      <Box flex={1} justifyContent="center" alignItems="center">
-        <Text color="black" fontSize="5xl" fontWeight="bold">
-          Workout
+    <View className="flex-1 bg-violet-800">
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-white text-6xl font-bold">Workout</Text>
+      </View>
+
+      <View className="flex-2 justify-end py-5 bg-white p-4 rounded-t-3xl">
+        <Text className="text-black text-center text-4xl font-bold py-5">
+          Entrar
         </Text>
-      </Box>
-      <Box flex={2} justifyContent="flex-end" py={5}>
-        <Text color="black" fontSize="5xl" fontWeight="bold" py={5}>
-          Olá,
-        </Text>
+
+        <Text className="text-black text-5xl font-bold py-5">Olá,</Text>
+
         <Formik
           initialValues={{
             email: "andrellopes021@gmail.com",
@@ -58,31 +53,20 @@ export default ({ navigation }) => {
             errors,
           }) => (
             <>
-              <Box>
+              <View>
                 <FormControl
                   isInvalid={
                     errors.email && touched.email && errors ? true : false
                   }
                 >
-                  <Input
-                    variant="underlined"
-                    placeholder="Email"
-                    fontSize="lg"
-                    color="black"
-                    marginBottom={touched.email && errors.email ? 0 : 5}
-                    fontWeight="semibold"
-                    onChangeText={handleChange("email")}
+                  <Text className="text-lg font-bold">Email</Text>
+                  <TextInput
+                    className="border-b-2 p-2 text-xl"
+                    onChange={handleChange("email")}
                     onBlur={handleBlur("email")}
                     value={values.email}
-                    InputLeftElement={
-                      <Icon
-                        name={"user"}
-                        size={20}
-                        color="#111"
-                        style={{ marginLeft: 4, marginRight: 5 }}
-                      />
-                    }
                   />
+
                   <FormControl.ErrorMessage
                     leftIcon={
                       <Icon name="alert-circle" color="red" size={14} />
@@ -94,36 +78,23 @@ export default ({ navigation }) => {
 
                 <FormControl
                   isInvalid={errors.password && touched.password ? true : false}
+                  py={4}
                 >
-                  <Input
-                    variant="underlined"
-                    placeholder="Senha"
-                    fontSize="lg"
-                    color="black"
-                    marginBottom={touched.password && errors.password ? 0 : 5}
-                    fontWeight="semibold"
-                    onChangeText={handleChange("password")}
+                 <Text className="text-lg font-bold">Senha</Text>
+                 <View className="flex-row items-center">
+                  <TextInput
+                    className="border-b-2 p-2 text-xl flex-1 mr-2"
+                    onChange={handleChange("password")}
                     onBlur={handleBlur("password")}
                     value={values.password}
-                    type={show ? "text" : "password"}
-                    InputRightElement={
-                      <Pressable marginRight={4} onPress={() => setShow(!show)}>
-                        <Icon
-                          name={show ? "eye" : "eye-off"}
-                          size={20}
-                          color="#111"
-                        />
-                      </Pressable>
-                    }
-                    InputLeftElement={
-                      <Icon
-                        name="lock"
-                        color="black"
-                        size={20}
-                        style={{ marginLeft: 4, marginRight: 5 }}
-                      />
-                    }
+                    secureTextEntry={show ? true : false}
                   />
+                   <Pressable onPress={() => setShow(!show)}>
+                  {show ? <Icon name="eye" color="#000" size={25}/>
+                  :       <Icon name="eye-off" color="#000" size={25}/>}  
+                   </Pressable>
+                 </View>
+                  
                   <FormControl.ErrorMessage
                     paddingBottom={4}
                     leftIcon={
@@ -133,35 +104,23 @@ export default ({ navigation }) => {
                     {errors.password}
                   </FormControl.ErrorMessage>
                 </FormControl>
-                <TouchableOpacity activeOpacity={0.7}>
-                  <Pressable
-                    justifyContent="center"
-                    alignItems="center"
-                    bgColor="indigo.600"
-                    rounded="sm"
-                    p={8}
-                    marginY={5}
-                    onPress={handleSubmit}
-                  >
-                    <Text fontSize="xl" fontWeight="bold">
-                      Entrar
-                    </Text>
-                  </Pressable>
+                <TouchableOpacity  activeOpacity={.9} className="bg-violet-600 p-9 justify-center items-center rounded-xl">
+                      <Text className="text-white text-2xl font-bold">Entrar</Text>
                 </TouchableOpacity>
 
                 <Pressable
-                  alignItems="center"
+                  className="items-center py-2"
                   onPress={() => navigation.navigate("SignUp")}
                 >
-                  <Text color="gray.800" fontWeight="bold">
+                  <Text className="text-gray-950 font-bold">
                     Registrar-se
                   </Text>
                 </Pressable>
-              </Box>
+              </View>
             </>
           )}
         </Formik>
-      </Box>
-    </Box>
+      </View>
+    </View>
   );
 };
