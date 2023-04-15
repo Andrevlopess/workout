@@ -39,7 +39,7 @@ export default ({ route, navigation }) => {
           {workouts.title}
         </Text>
       </Box>
-      <Pressable onPress={()=> navigation.navigate("NewWorkout", {
+      <Pressable onPress={()=> navigation.push("NewWorkout", {
         newExercise: true,
         workout: workouts
         })}>

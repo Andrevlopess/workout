@@ -36,7 +36,7 @@ export default ({ navigation }) => {
           WORKOUTS
         </Text>
       </Box>
-      <Pressable onPress={() => navigation.navigate("NewWorkout", {newWorkout: true})}>
+      <Pressable onPress={() => navigation.push("NewWorkout", {newWorkout: true})}>
          <Box
         borderWidth={1}
         borderColor="#ccc"

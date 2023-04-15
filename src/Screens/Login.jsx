@@ -8,7 +8,7 @@ import {
 } from "native-base";
 import { Button, TouchableOpacity, Alert } from "react-native";
 import { useContext, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { View } from "react-native";
 import { Formik } from "formik";
 import { AuthContext } from "../../Contexts/AuthContext";
 import * as Yup from "yup";

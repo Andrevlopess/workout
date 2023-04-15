@@ -64,6 +64,11 @@ export default function WorkoutProvider({ children }) {
     }
   }
 
+  // useEffect(() => {
+  // getWorkouts(user.id)
+  // }, [newExercise, newWorkout])
+  
+
 
   return (
     <WorkoutContext.Provider

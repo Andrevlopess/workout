@@ -1,5 +1,5 @@
 import { Avatar, Box, Pressable, Text } from "native-base";
-import { SafeAreaView } from "react-native";
+import { TextInput, View } from "react-native";
 import Calendar from "../Components/Calendar";
 import {useContext} from 'react'
 import { AuthContext } from "../../Contexts/AuthContext";
@@ -46,7 +46,6 @@ export default ({ navigation }) => {
           </Text>
         </Pressable>
 
-        <Calendar />
       </Box>
     </Box>
   );

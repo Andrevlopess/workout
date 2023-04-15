@@ -9,7 +9,7 @@ export function WorkoutCard({ workouts, navigation }) {
   
   return (
     <Pressable
-      onPress={() => navigation.navigate("WorkoutDetail", { workouts })}
+      onPress={() => navigation.push("WorkoutDetail", { workouts })}
     >
       <Box
         borderWidth={1}
