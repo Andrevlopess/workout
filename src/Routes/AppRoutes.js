@@ -13,7 +13,7 @@ export default (props) => {
 
   return (
     <Stack.Navigator
-      initialRouteName="Workouts"
+      initialRouteName="Home"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Login" component={Login} />

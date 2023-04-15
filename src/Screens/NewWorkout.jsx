@@ -13,8 +13,12 @@ import { KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { WorkoutContext } from "../../Contexts/WorkoutContext";
 import NewExerciseForm from "../Components/WorkoutForms/NewExerciseForm";
+import NewWorkoutForm from "../Components/WorkoutForms/NewWorkoutForm";
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+  const { newExercise, newWorkout, workout } = route.params;
+
+  console.log(newExercise, newWorkout);
 
   return (
     <KeyboardAvoidingView
@@ -43,8 +47,8 @@ export default ({ navigation }) => {
             </Text>
           </Box>
 
-          
-
+          {newExercise && <NewExerciseForm workout={workout}/>}
+          {newWorkout && <NewWorkoutForm />}
         </Box>
       </ScrollView>
     </KeyboardAvoidingView>

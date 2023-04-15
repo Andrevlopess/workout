@@ -6,71 +6,70 @@ import { useSafeAreaFrame } from "react-native-safe-area-context";
 export const WorkoutContext = createContext();
 
 export default function WorkoutProvider({ children }) {
+  const { user } = useContext(AuthContext);
 
-    const {user} = useContext(AuthContext)
+  const [workouts, setWorkouts] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [workouts, setWorkouts] = useState(null)
+  
+  async function newWorkout(values) {
+    try {
+      setIsLoading(true);
+      const { title } = values;
+      
+      const response = await api.post("/newWorkout", {
+        title,
+        authorId: user.id,
+      });
 
-    async function newWorkout(values){
-     try{
+      getWorkouts(user.id);
 
-        const {title} = values;
+      console.log("treino criado");
 
-        const response = await api.post('/newWorkout',{
-             title,
-             authorId: user.id
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async function newExercise(values) {
+    try {
+      const { title, reps, targetMuscle, inWorkoutId } = values;
+    
+        const response = await api.post("/newExercise", {
+          title,
+          reps,
+          targetMuscle,
+          inWorkoutId
         })
 
-        if(response.data){
-          setWorkout(response.data)
-        }
-
-     }catch(err){
-        console.log(err);
-     }
+        console.log(response.data);
+    } catch (err) {
+      console.log(err);
     }
-    async function newExercise(values){
-     try{
-        const {title, reps, targetMuscle} = values;
+  }
+  async function getWorkouts(values) {
+    try {
+      setIsLoading(true);
+      const { authorId } = values;
 
-        if(workout){
-          const response = await api.post('/newWorkout',{
-             title,
-             reps,
-             targetMuscle,
-             inWorkoutId: workout.id,
-        })
+      const workouts = await api.get("/getWorkouts", {
+        authorId,
+      });
 
-        if(response.data){
-          console.log(response.data)
-        }
-        }
-
-     }catch(err){
-        console.log(err);
-     }
-    }
-
-    async function getWorkouts(values){
-
-      const {authorId} = values;
-
-      const workouts = await api.get('/getWorkouts',{
-        authorId
-      })
-
-      if(workouts.data){
-        setWorkouts(workouts.data)
+      if (workouts.data && workouts.status === 200) {
+        setWorkouts(workouts.data);
+        setIsLoading(false);
       }
+    } catch (error) {
+      console.warn(error);
     }
+  }
 
-    useEffect(()=>{
-      getWorkouts("fd6c8e29-f2f2-4b19-abea-c9f2275fe46c")
-    },[])
 
   return (
-    <WorkoutContext.Provider value={{newWorkout, newExercise, workouts}}>
-    {children}
+    <WorkoutContext.Provider
+      value={{ newWorkout, newExercise, workouts, getWorkouts, isLoading }}
+    >
+      {children}
     </WorkoutContext.Provider>
-  )
+  );
 }

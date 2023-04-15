@@ -87,6 +87,7 @@ export default function AuthProvider({ children }) {
     console.log("limpado fi ");
   }
 
+
   return (
     <AuthContext.Provider
       value={{

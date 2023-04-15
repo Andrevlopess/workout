@@ -17,9 +17,9 @@ const newExerciseSchema = Yup.object().shape({
   targetMuscle: Yup.string().required("Escolha um Músculo Alvo"),
 });
 
-export default (props) => {
+export default ({ navigation, workout, route }) => {
 
-    const {newExercise} = useContext(WorkoutContext)
+  const { newExercise } = useContext(WorkoutContext);
 
   return (
     <Box borderWidth={1} borderColor="#ccc" padding={3} rounded="lg">
@@ -51,9 +51,10 @@ export default (props) => {
       >
         <Formik
           initialValues={{
-            title: "",
-            reps: "",
-            targetMuscle: "",
+            title: "exercicio mt massa",
+            reps: "4x 10 10 10 10 ",
+            targetMuscle: "costas",
+            inWorkoutId: workout.id,
           }}
           validationSchema={newExerciseSchema}
           onSubmit={(values, { resetForm }) => {
@@ -124,6 +125,7 @@ export default (props) => {
                 </Text>
                 <FormControl isRequired isInvalid={errors.targetMuscle}>
                   <Select
+                  selectedValue="Costas"
                     defaultValue=""
                     minWidth="full"
                     fontSize="md"

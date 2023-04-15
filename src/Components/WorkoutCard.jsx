@@ -5,11 +5,11 @@ import { FlatList, Pressable } from "react-native";
 
 export function WorkoutCard({ workouts, navigation }) {
 
-  const exercises = workouts.exercises;
+  
   
   return (
     <Pressable
-      onPress={() => navigation.navigate("WorkoutDetail", { exercises })}
+      onPress={() => navigation.navigate("WorkoutDetail", { workouts })}
     >
       <Box
         borderWidth={1}

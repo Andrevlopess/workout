@@ -30,7 +30,7 @@ export default ({ navigation }) => {
       </Box>
 
       <Box flex={1}>
-        <Pressable
+        <Pressable onPress={() =>  navigation.navigate("Workouts")}
           bgColor="white"
           flex={2}
           marginY={2}
@@ -43,23 +43,6 @@ export default ({ navigation }) => {
         >
           <Text color="black" fontSize="2xl" style={{ fontWeight: "bold" }}>
             Meus treinos
-          </Text>
-        </Pressable>
-
-        <Pressable
-          onPress={() => navigation.navigate("NewWorkout")}
-          bgColor="white"
-          flex={1}
-          marginY={2}
-          padding={10}
-          borderWidth={1.5}
-          rounded="sm"
-          borderColor="#ccc"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Text color="black" fontSize="2xl" style={{ fontWeight: "bold" }}>
-            Novo treino
           </Text>
         </Pressable>
 
