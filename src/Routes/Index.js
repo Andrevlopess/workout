@@ -12,7 +12,7 @@ export default (props) => {
 
   return (
     <NavigationContainer>
-      {false ? <AppRoutes/> : <AuthRoute/>}
+      {signed ? <AppRoutes/> : <AuthRoute/>}
     </NavigationContainer>
   );
 };

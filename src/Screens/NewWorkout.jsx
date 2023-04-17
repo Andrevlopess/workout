@@ -1,56 +1,83 @@
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FormControl,
-  Input,
-  Pressable,
-  Switch,
-  Text,
-} from "native-base";
 import { useContext } from "react";
-import { KeyboardAvoidingView, ScrollView, Platform } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
-import { WorkoutContext } from "../../Contexts/WorkoutContext";
-import NewExerciseForm from "../Components/WorkoutForms/NewExerciseForm";
-import NewWorkoutForm from "../Components/WorkoutForms/NewWorkoutForm";
+import { View, Pressable, Text, TextInput, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import * as Yup from 'yup';
+import { FormControl } from "native-base";
+import { Formik } from "formik";
+
+const newWorkoutSchema = Yup.object().shape({
+  title: Yup.string()
+    .max(50, "Titúlo muito grande")
+    .required("Campo obrigatório"),
+});
+
 
 export default ({ navigation, route }) => {
-  const { newExercise, newWorkout, workout } = route.params;
-
-  console.log(newExercise, newWorkout);
-
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView>
-        <Box flex={1} padding={3} color="white">
-          <Box
-            paddingY={8}
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Pressable onPress={() => navigation.goBack()}>
-              <Icon name="chevron-left" size={25} color="#000" />
-            </Pressable>
+    <View className="bg-white flex-1  px-4 py-12">
+      <View className="flex-row items-center">
+        <Pressable onPress={() => navigation.goBack()}>
+          <Icon name="ios-chevron-back-sharp" color="#000" size={40} />
+        </Pressable>
+        <Text className="text-black font-bold text-4xl text-center">
+          Novo treino
+        </Text>
+      </View>
+      <Text className="text-4xl font-bold text-black py-20 px-4">
+        Crie e personalize seus treinos como quiser!
+      </Text>
 
-            <Text
-              marginX="auto"
-              color="black"
-              style={{ fontWeight: "bold" }}
-              fontSize="2xl"
-            >
-              Novo treino
-            </Text>
-          </Box>
+      <Formik
+        initialValues={{
+          title: "",
+        }}
+        validationSchema={newWorkoutSchema}
+        onSubmit={(values, { resetForm }) => {
+          newWorkout(values);
+          resetForm();
+        }}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          touched,
+          errors,
+        }) => <>
+          <FormControl
+                  isInvalid={
+                    errors.title && touched.title && errors ? true : false
+                  }
+                >
+                  <Text className="text-lg font-bold">Titulo do treino</Text>
+                  <TextInput
+                      
+                    className="border-b-2 p-2 text-xl"
+                    onChange={handleChange("title")}
+                    onBlur={handleBlur("title")}
+                    value={values.title}
+                  />
 
-          {newExercise && <NewExerciseForm workout={workout}/>}
-          {newWorkout && <NewWorkoutForm />}
-        </Box>
-      </ScrollView>
-    </KeyboardAvoidingView>
+                  <FormControl.ErrorMessage
+                    leftIcon={
+                      <Icon name="alert-circle" color="red" size={14} />
+                    }
+                  >
+                    {errors.title}
+                  </FormControl.ErrorMessage>
+                </FormControl>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  activeOpacity={0.9}
+                  className="bg-violet-700 p-6 justify-center items-center rounded-xl"
+                >
+                  <Text className="text-white text-2xl font-bold">
+                   Criar
+                  </Text>
+                </TouchableOpacity>
+        </>}
+      </Formik>
+    </View>
   );
 };

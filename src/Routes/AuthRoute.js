@@ -2,8 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Login from "../Screens/Login";
 import SignUp from "../Screens/SignUp";
-import Home from "../Screens/Home";
-import Auth from "../Screens/Auth";
 
 
 export default (props) => {

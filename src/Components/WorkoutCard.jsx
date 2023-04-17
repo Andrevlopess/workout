@@ -1,35 +1,24 @@
-import { Box, Text } from "native-base";
-import { useContext } from "react";
-import { WorkoutContext } from "../../Contexts/WorkoutContext";
-import { FlatList, Pressable } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { TouchableOpacity, Text, View } from "react-native";
 
 export function WorkoutCard({ workouts, navigation }) {
 
   
   
   return (
-    <Pressable
-      onPress={() => navigation.push("WorkoutDetail", { workouts })}
-    >
-      <Box
-        borderWidth={1}
-        borderColor="#ccc"
-        padding={3}
-        rounded="lg"
-        marginY={2.5}
-        bgColor="indigo.600"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        shadow="5"
-      >
-        <Text padding={4} fontSize="2xl" style={{ fontWeight: "bold" }}>
-          {workouts.title}
-        </Text>
-        <Text padding={4} fontSize="4xl" style={{ fontWeight: "bold" }}>
-          {workouts.exercises.length}
-        </Text>
-      </Box>
-    </Pressable>
+       <TouchableOpacity
+          onPress={() => navigation.navigate("WorkoutDetail", {workouts})}
+          activeOpacity={0.9}
+          className="bg-violet-200 my-2 py-5 px-4 justify-between items-center rounded-xl flex-row shadow-2xl"
+        >
+          <View  className="p-2 w-4/5">
+            <Text className="text-white text-2xl font-bold">{workouts.title}</Text>
+            <Text className="italic text-white text-lg font-bold">
+            {workouts.exercises.length ?  `${workouts.exercises.length} exercícios` : "Nenhum exercício"}
+            </Text>
+          </View>
+          <Icon name="ios-chevron-forward" color="#fff" size={40} />
+        </TouchableOpacity>
+     
   );
 }

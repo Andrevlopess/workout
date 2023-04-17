@@ -104,7 +104,7 @@ export default ({ navigation }) => {
                     {errors.password}
                   </FormControl.ErrorMessage>
                 </FormControl>
-                <TouchableOpacity  activeOpacity={.9} className="bg-violet-600 p-9 justify-center items-center rounded-xl">
+                <TouchableOpacity onPress={handleSubmit} activeOpacity={.9} className="bg-violet-700 p-6 justify-center items-center rounded-xl">
                       <Text className="text-white text-2xl font-bold">Entrar</Text>
                 </TouchableOpacity>
 

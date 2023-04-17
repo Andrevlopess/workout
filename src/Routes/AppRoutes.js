@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import Login from "../Screens/Login";
 import SignUp from "../Screens/SignUp";
 import Home from "../Screens/Home";
-import Auth from "../Screens/Auth";
 import NewWorkout from "../Screens/NewWorkout";
 import Workouts from "../Screens/Workouts";
 import WorkoutDetail from "../Screens/WorkoutDetail";

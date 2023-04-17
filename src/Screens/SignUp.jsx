@@ -1,9 +1,18 @@
-import { Box, FormControl, Input, Pressable, Text } from "native-base";
+import { FormControl } from "native-base";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/Feather";
-import { Alert, KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 
@@ -34,222 +43,153 @@ export default (props) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-      keyboardVerticalOffset={50}
-      enabled
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView>
-        <Box padding={3} flex={1}>
-          <Box flex={1} justifyContent="flex-end" py={5}>
-            <Box>
-              <Text
-                marginY={40}
-                color="black"
-                fontSize="5xl"
-                fontWeight="bold"
-                textAlign="center"
-              >
-                Cadastro
-              </Text>
-            </Box>
+    <View className="flex-1 bg-violet-800">
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-white text-6xl font-bold">Workout</Text>
+      </View>
 
-            <Box>
-              <Formik
-                initialValues={{
-                  name: "",
-                  email: "",
-                  password: "",
-                  confirmPassword: "",
-                }}
-                validationSchema={SignupSchema}
-                onSubmit={(values, { resetForm }) => {
-                  createNewUser(values);
-                  resetForm();
-                }}
-              >
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  touched,
-                  errors,
-                }) => (
-                  <>
-                    <FormControl
-                      isInvalid={touched.name && errors.name ? true : false}
-                    >
-                      <Input
-                        variant="underlined"
-                        placeholder="Nome"
-                        fontSize="lg"
-                        color="black"
-                        marginBottom={touched.name && errors.name ? 0 : 5}
-                        fontWeight="semibold"
-                        onChangeText={handleChange("name")}
-                        onBlur={handleBlur("name")}
-                        value={values.name}
-                        InputLeftElement={
-                          <Icon
-                            name="user"
-                            color="black"
-                            size={20}
-                            style={{ marginLeft: 4, marginRight: 5 }}
-                          />
-                        }
-                      />
-                      <FormControl.ErrorMessage
-                        paddingBottom={4}
-                        leftIcon={
-                          <Icon name="alert-circle" color="red" size={14} />
-                        }
-                      >
-                        {errors.name}
-                      </FormControl.ErrorMessage>
-                    </FormControl>
+      <View className="flex-2 justify-end py-5 bg-white p-4 rounded-t-3xl">
+        <Text className="text-black text-center text-4xl font-bold py-5">
+          Registrar
+        </Text>
 
-                    <FormControl
-                      isInvalid={touched.email && errors.email ? true : false}
-                    >
-                      <Input
-                        variant="underlined"
-                        placeholder="Email"
-                        fontSize="lg"
-                        color="black"
-                        marginBottom={touched.email && errors.email ? 0 : 5}
-                        fontWeight="semibold"
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
-                        InputLeftElement={
-                          <Icon
-                            name="mail"
-                            color="black"
-                            size={20}
-                            style={{ marginLeft: 4, marginRight: 5 }}
-                          />
-                        }
-                      />
-                      <FormControl.ErrorMessage
-                        paddingBottom={4}
-                        leftIcon={
-                          <Icon name="alert-circle" color="red" size={14} />
-                        }
-                      >
-                        {errors.email}
-                      </FormControl.ErrorMessage>
-                    </FormControl>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          }}
+          validationSchema={SignupSchema}
+          onSubmit={(values, { resetForm }) => {
+            createNewUser(values);
+          }}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <>
+              <View>
+                <FormControl
+                  isInvalid={
+                    errors.name && touched.name && errors ? true : false
+                  }
+                >
+                  <Text className="text-lg font-bold">Nome</Text>
+                  <TextInput
+                    className="border-b-2 p-2 text-xl"
+                    onChange={handleChange("name")}
+                    onBlur={handleBlur("name")}
+                    value={values.name}
+                  />
 
-                    <FormControl
-                      isInvalid={
-                        touched.confirmPassword &&
-                        errors.confirmPassword &&
-                        errors.password &&
-                        touched.password
-                          ? true
-                          : false
-                      }
-                    >
-                      <Input
-                        variant="underlined"
-                        placeholder="Senha"
-                        fontSize="lg"
-                        color="black"
-                        marginBottom={5}
-                        fontWeight="semibold"
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values.password}
-                        type={show ? "text" : "password"}
-                        InputRightElement={
-                          <Pressable
-                            marginRight={4}
-                            onPress={() => setShow(!show)}
-                          >
-                            <Icon
-                              name={show ? "eye" : "eye-off"}
-                              size={20}
-                              color="#111"
-                            />
-                          </Pressable>
-                        }
-                        InputLeftElement={
-                          <Icon
-                            name="lock"
-                            color="black"
-                            size={20}
-                            style={{ marginLeft: 4, marginRight: 5 }}
-                          />
-                        }
-                      />
-                      <Input
-                        variant="underlined"
-                        placeholder="Confirmar Senha"
-                        fontSize="lg"
-                        color="black"
-                        fontWeight="semibold"
-                        marginBottom={
-                          touched.confirmPassword && errors.confirmPassword
-                            ? 0
-                            : 5
-                        }
-                        onChangeText={handleChange("confirmPassword")}
-                        onBlur={handleBlur("confirmPassword")}
-                        value={values.confirmPassword}
-                        type={show ? "text" : "password"}
-                        InputRightElement={
-                          <Pressable
-                            marginRight={4}
-                            onPress={() => setShow(!show)}
-                          >
-                            <Icon
-                              name={show ? "eye" : "eye-off"}
-                              size={20}
-                              color="#111"
-                            />
-                          </Pressable>
-                        }
-                        InputLeftElement={
-                          <Icon
-                            name="lock"
-                            color="black"
-                            size={20}
-                            style={{ marginLeft: 4, marginRight: 5 }}
-                          />
-                        }
-                      />
-                      <FormControl.ErrorMessage
-                        paddingBottom={4}
-                        leftIcon={
-                          <Icon name="alert-circle" color="red" size={14} />
-                        }
-                      >
-                        {errors.password
-                          ? errors.password
-                          : errors.confirmPassword}
-                      </FormControl.ErrorMessage>
-                    </FormControl>
+                  <FormControl.ErrorMessage
+                    leftIcon={
+                      <Icon name="alert-circle" color="red" size={14} />
+                    }
+                  >
+                    {errors.name}
+                  </FormControl.ErrorMessage>
+                </FormControl>
+                <FormControl
+                  isInvalid={
+                    errors.email && touched.email && errors ? true : false
+                  }
+                >
+                  <Text className="text-lg font-bold">Email</Text>
+                  <TextInput
+                    className="border-b-2 p-2 text-xl"
+                    onChange={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                  />
 
-                    <Pressable
-                      justifyContent="center"
-                      alignItems="center"
-                      bgColor="indigo.600"
-                      rounded="md"
-                      p={8}
-                      marginY={5}
-                      onPress={handleSubmit}
-                    >
-                      <Text fontSize="2xl">Cadastrar</Text>
+                  <FormControl.ErrorMessage
+                    leftIcon={
+                      <Icon name="alert-circle" color="red" size={14} />
+                    }
+                  >
+                    {errors.email}
+                  </FormControl.ErrorMessage>
+                </FormControl>
+
+                <FormControl
+                  isInvalid={errors.password && touched.password ? true : false}
+                  py={4}
+                >
+                  <Text className="text-lg font-bold">Senha</Text>
+                  <View className="flex-row items-center">
+                    <TextInput
+                      className="border-b-2 p-2 text-xl flex-1 mr-2"
+                      onChange={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      value={values.password}
+                      secureTextEntry={show ? true : false}
+                    />
+                    <Pressable onPress={() => setShow(!show)}>
+                      {show ? (
+                        <Icon name="eye" color="#000" size={25} />
+                      ) : (
+                        <Icon name="eye-off" color="#000" size={25} />
+                      )}
                     </Pressable>
-                  </>
-                )}
-              </Formik>
-            </Box>
-          </Box>
-        </Box>
-      </ScrollView>
-    </KeyboardAvoidingView>
+                  </View>
+
+                  <FormControl.ErrorMessage
+                    paddingBottom={4}
+                    leftIcon={
+                      <Icon name="alert-circle" color="red" size={14} />
+                    }
+                  >
+                    {errors.password}
+                  </FormControl.ErrorMessage>
+
+                  <Text className="text-lg font-bold">Confirmar Senha</Text>
+                  <View className="flex-row items-center">
+                    <TextInput
+                      className="border-b-2 p-2 text-xl flex-1 mr-2"
+                      onChange={handleChange("confirmPassword")}
+                      onBlur={handleBlur("confirmPassword")}
+                      value={values.confirmPassword}
+                      secureTextEntry={show ? true : false}
+                    />
+                    <Pressable onPress={() => setShow(!show)}>
+                      {show ? (
+                        <Icon name="eye" color="#000" size={25} />
+                      ) : (
+                        <Icon name="eye-off" color="#000" size={25} />
+                      )}
+                    </Pressable>
+                  </View>
+                  <FormControl.ErrorMessage
+                    paddingBottom={4}
+                    leftIcon={
+                      <Icon name="alert-circle" color="red" size={14} />
+                    }
+                  >
+                    {errors.password}
+                  </FormControl.ErrorMessage>
+                </FormControl>
+
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  activeOpacity={0.9}
+                  className="bg-violet-700 p-6 justify-center items-center rounded-xl"
+                >
+                  <Text className="text-white text-2xl font-bold">
+                    Registrar
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </Formik>
+      </View>
+    </View>
   );
 };
