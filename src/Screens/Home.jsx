@@ -9,7 +9,7 @@ export default ({ navigation }) => {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="bg-violet-100 h-1/2 w-full rounded-full scale-175 -translate-y-40 z-0 absolute" />
+      <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" />
       <View className="px-6 py-12">
         <View className="flex-row justify-between items-center mb-12">
           <Text className="text-white font-bold text-4xl">Olá, André</Text>
