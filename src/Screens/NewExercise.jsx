@@ -5,6 +5,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -12,9 +14,11 @@ import * as Yup from "yup";
 import { FormControl } from "native-base";
 import { Formik } from "formik";
 import { WorkoutContext } from "../../Contexts/WorkoutContext";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../lib/axios";
 
 const newExerciseSchema = Yup.object().shape({
-  name: Yup.string().max(30, "Nome muito grande").required("Campo obrigatório"),
+  title: Yup.string().max(30, "Nome muito grande").required("Campo obrigatório"),
   reps: Yup.string()
     .max(20, "Insira no máximo 20 caracteres")
     .required("Campo obrigatório"),
@@ -22,14 +26,31 @@ const newExerciseSchema = Yup.object().shape({
 });
 
 export default ({ navigation, route }) => {
+
   const { workout } = route.params;
-  const {newExercise} = useContext(WorkoutContext)
+
+  const createExercise = useMutation({
+    mutationFn: async (values) => {
+
+      const { title, reps, targetMuscle, inWorkoutId } = values;
+
+      await api.post("/newExercise", {
+        title,
+        reps,
+        targetMuscle,
+        inWorkoutId
+      });
+    },
+  });
+
+  if(createExercise.isSuccess) Alert.alert("Exercício adicionado com sucesso!")
+  if(createExercise.isError) Alert.alert("Erro ao adicionar o exercício!")
 
   return (
     <View className="bg-white flex-1 px-4 py-12">
-       <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" /> 
+      <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" />
       <View className="flex-row items-center mb-10">
-        <Pressable onPress={() => navigation.goBack()} className="absolute">
+        <Pressable onPress={() => navigation.push("WorkoutDetail", {workout})} className="absolute">
           <Icon name="ios-chevron-back-sharp" color="#fff" size={40} />
         </Pressable>
         <Text className="text-white font-bold text-4xl text-center mx-auto ">
@@ -39,15 +60,14 @@ export default ({ navigation, route }) => {
       <View className=" border-4 bg-white rounded-2xl p-4 border-violet-600 justify-between">
         <Formik
           initialValues={{
-            name: "",
+            title: "",
             reps: "",
             targetMuscle: "",
-            inWorkoutId: workout.id
+            inWorkoutId: workout.id,
           }}
           validationSchema={newExerciseSchema}
           onSubmit={(values, { resetForm }) => {
-            console.log(values);
-            newExercise(values)
+            createExercise.mutate(values);
             resetForm();
           }}
         >
@@ -61,20 +81,20 @@ export default ({ navigation, route }) => {
           }) => (
             <>
               <FormControl
-                isInvalid={errors.name && touched.name && errors ? true : false}
+                isInvalid={errors.title && touched.title && errors ? true : false}
               >
                 <Text className="text-xl font-bold">Nome do exercício</Text>
                 <TextInput
                   className="border-b-2 p-2 text-xl"
-                  onChange={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                  value={values.name}
+                  onChangeText={handleChange("title")}
+                  onBlur={handleBlur("title")}
+                  value={values.title}
                 />
 
                 <FormControl.ErrorMessage
                   leftIcon={<Icon name="alert-circle" color="red" size={14} />}
                 >
-                  {errors.name}
+                  {errors.title}
                 </FormControl.ErrorMessage>
               </FormControl>
 
@@ -85,7 +105,7 @@ export default ({ navigation, route }) => {
                 <Text className="text-xl font-bold">Repetições</Text>
                 <TextInput
                   className="border-b-2 p-2 text-xl"
-                  onChange={handleChange("reps")}
+                  onChangeText={handleChange("reps")}
                   onBlur={handleBlur("reps")}
                   value={values.reps}
                 />
@@ -116,7 +136,13 @@ export default ({ navigation, route }) => {
                 activeOpacity={0.9}
                 className="bg-violet-700 p-10 justify-center items-center rounded-xl "
               >
-                <Text className="text-white text-2xl font-bold">Criar</Text>
+                <Text className="text-white text-2xl font-bold">
+                {createExercise.isLoading ? (
+                      <ActivityIndicator color="#fff" size={40} />
+                    ) : (
+                      "Adicionar"
+                    )}
+                </Text>
               </TouchableOpacity>
             </>
           )}

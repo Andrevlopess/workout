@@ -1,18 +1,19 @@
 import Icon from "react-native-vector-icons/Ionicons";
 import { TouchableOpacity, Text, View } from "react-native";
 
-export function WorkoutCard({ workouts, navigation }) {
+export function WorkoutCard({ workout, navigation }) {
+
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("WorkoutDetail", { workouts })}
+      <TouchableOpacity
+      onPress={() => navigation.navigate("WorkoutDetail", { workout })}
       activeOpacity={0.9}
-      className="bg-violet-200 my-2 py-5 px-4 justify-between items-center rounded-xl flex-row shadow-2xl"
+      className="py-5 px-4 justify-between items-center flex-row shadow-2xl border-b-2 border-b-white "
     >
       <View className="p-2 w-4/5">
-        <Text className="text-white text-2xl font-bold">{workouts.title}</Text>
-        {!!workouts.exercises.length && (
+        <Text className="text-white text-2xl font-bold">{workout.title}</Text>
+        {!!workout.exercises.length && (
           <Text className="italic text-white text-lg font-bold">
-            {`${workouts.exercises.length} exercícios`}
+            {`${workout.exercises.length} exercícios`}
           </Text>
         )}
       </View>

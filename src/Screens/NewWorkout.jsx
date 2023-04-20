@@ -5,29 +5,49 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Yup from "yup";
 import { FormControl } from "native-base";
 import { Formik } from "formik";
 import { WorkoutContext } from "../../Contexts/WorkoutContext";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../lib/axios";
+import { AuthContext } from "../../Contexts/AuthContext";
+import { Loading } from "../Components/Loading";
 
 export default ({ navigation, route }) => {
-  
+  const { user } = useContext(AuthContext);
+
   const newWorkoutSchema = Yup.object().shape({
     title: Yup.string()
       .max(50, "Titúlo muito grande")
       .required("Campo obrigatório"),
   });
 
-  const {newWorkout} = useContext(WorkoutContext)
+  const createWorkout = useMutation({
+    mutationFn: async (values) => {
+      const { title } = values;
+      await api.post("/newWorkout", {
+        title,
+        authorId: user.id,
+      });
+    },
+  });
 
-  
+  if (createWorkout.isSuccess) {
+    Alert.alert("Treino criado com sucesso!")
+  }
+  if (createWorkout.isError) {
+    Alert.alert("Erro ao criar novo treino!");
+  }
 
   return (
     <View className="bg-white justify-between flex-1 px-4 py-12">
       <View className="flex-row items-center">
-        <Pressable onPress={() => navigation.goBack()} className="absolute">
+        <Pressable onPress={() => navigation.push("Workouts")} className="absolute">
           <Icon name="ios-chevron-back-sharp" color="#000" size={40} />
         </Pressable>
         <Text className="text-black font-bold text-4xl text-center mx-auto ">
@@ -45,7 +65,7 @@ export default ({ navigation, route }) => {
           }}
           validationSchema={newWorkoutSchema}
           onSubmit={(values, { resetForm }) => {
-            newWorkout(values)
+            createWorkout.mutate(values);
             resetForm();
           }}
         >
@@ -82,7 +102,13 @@ export default ({ navigation, route }) => {
                   onPress={handleSubmit}
                   className="bg-violet-700 p-6 justify-center items-center rounded-xl "
                 >
-                  <Text className="text-white text-2xl font-bold">Criar</Text>
+                  <Text className="text-white text-2xl font-bold">
+                    {createWorkout.isLoading ? (
+                      <ActivityIndicator color="#fff" size={40} />
+                    ) : (
+                      "Criar"
+                    )}
+                  </Text>
                 </Pressable>
               </TouchableOpacity>
             </>
