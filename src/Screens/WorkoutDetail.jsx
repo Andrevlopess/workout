@@ -13,10 +13,10 @@ export default ({ route, navigation }) => {
 
   const inWorkoutId = workout.id;
 
-  const [exercises, setExercises] = useState(null);
+  const [exercises, setExercises] = useState([]);
 
   const { isLoading } = useQuery(
-    ["Exercises"],
+    ["Exercises", inWorkoutId],
     async () => await api.get(`getExercises/${inWorkoutId}`),
     { onSuccess: (data) => setExercises(data.data) }
   );
@@ -41,17 +41,37 @@ export default ({ route, navigation }) => {
         </Pressable>
       </View>
 
-      <View className="flex-row items-center mb-4 px-4">
-        <Text className="text-white text-xl font-semibold mr-2">
-          Ordenar por
-        </Text>
-        <Icon name="chevron-down" color="#fff" size={25} />
-      </View>
-      <FlatList
-        data={workout.exercises}
-        renderItem={({ item }) => <ExerciseCard exercise={item} />}
-        keyExtractor={(item) => item.id}
-      />
+      {exercises.length ? (
+        <>
+          <View className="flex-row items-center mb-4 px-4">
+            <Text className="text-white text-xl font-semibold mr-2">
+              Ordenar por
+            </Text>
+            <Icon name="chevron-down" color="#fff" size={25} />
+          </View>
+          <FlatList
+            data={exercises}
+            renderItem={({ item }) => <ExerciseCard exercise={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        </>
+      ) : (
+        <View className="p-4 flex-1 justify-center items-center">
+          <Text className="text-white text-xl font-semibold">
+            Adicione exercícios a este treino!
+          </Text>
+          <Pressable
+            onPress={() =>
+              navigation.push("NewExercise", {
+                workout: workout,
+              })
+            }
+            className="bg-violet-500 justify-center items-center p-3 w-full rounded-sm my-5"
+          >
+            <Text className="text-white text-lg font-semibold">Adicionar exercícios</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };

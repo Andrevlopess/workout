@@ -16,7 +16,7 @@ export default ({ navigation }) => {
   const authorId = user.id
 
   const { isLoading } = useQuery(
-    ["workouts"],
+    ["workouts", authorId],
     async () => await api.get(`getWorkouts/${authorId}`),
     {onSuccess: (data) => {
      setWorkouts(data.data)
