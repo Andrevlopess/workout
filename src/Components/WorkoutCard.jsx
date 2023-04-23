@@ -5,8 +5,8 @@ export function WorkoutCard({ workout, navigation }) {
 
   return (
       <TouchableOpacity
-      onPress={() => navigation.navigate("WorkoutDetail", { workout })}
-      onLongPress={() => navigation.navigate("EditWorkout", { workout })}
+      onPress={() => navigation.push("WorkoutDetail", { workout })}
+      onLongPress={() => navigation.push("EditWorkout", { workout })}
       activeOpacity={0.9}
       className="py-5 px-4 justify-between items-center flex-row shadow-2xl border-b-2 border-b-white "
     >

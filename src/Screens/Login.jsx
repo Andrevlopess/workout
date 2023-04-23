@@ -110,7 +110,7 @@ export default ({ navigation }) => {
 
                 <Pressable
                   className="items-center py-2"
-                  onPress={() => navigation.navigate("SignUp")}
+                  onPress={() => navigation.push("SignUp")}
                 >
                   <Text className="text-gray-950 font-bold">
                     Registrar-se

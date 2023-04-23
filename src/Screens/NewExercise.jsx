@@ -48,7 +48,7 @@ export default ({ navigation, route }) => {
 
   return (
     <View className="bg-white flex-1 px-4 py-12">
-      <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" />
+      <View className="bg-violet-600 h-44 w-full z-0 absolute top-0 -scale-150" />
       <View className="flex-row items-center mb-10">
         <Pressable onPress={() => navigation.push("WorkoutDetail", {workout})} className="absolute">
           <Icon name="ios-chevron-back-sharp" color="#fff" size={40} />

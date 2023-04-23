@@ -37,12 +37,12 @@ export default ({ navigation, route }) => {
     },
   });
 
-  if (createWorkout.isSuccess) {
-    Alert.alert("Treino criado com sucesso!")
-  }
-  if (createWorkout.isError) {
-    Alert.alert("Erro ao criar novo treino!");
-  }
+  // if (createWorkout.isSuccess) {
+  //   Alert.alert("Treino criado com sucesso!")
+  // }
+  // if (createWorkout.isError) {
+  //   Alert.alert("Erro ao criar novo treino!");
+  // }
 
   return (
     <View className="bg-white justify-between flex-1 px-4 py-12">
@@ -84,6 +84,9 @@ export default ({ navigation, route }) => {
               >
                 <Text className="text-xl font-bold">Titulo do treino</Text>
                 <TextInput
+                  maxLength={50}
+                  autoFocus
+                  cursorColor="#7c3aed"
                   className="border-b-2 p-2 text-xl"
                   onChangeText={handleChange("title")}
                   onBlur={handleBlur("title")}

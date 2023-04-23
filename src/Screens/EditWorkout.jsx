@@ -8,19 +8,26 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { api } from "../lib/axios";
-import {useState} from 'react'
+import { useState } from "react";
+import * as Yup from "yup";
+
+const newWorkoutSchema = Yup.object().shape({
+  title: Yup.string()
+    .max(50, "Titúlo muito grande")
+    .required("Campo obrigatório"),
+});
 
 export default ({ route, navigation }) => {
   const { workout } = route.params;
 
-  const authorId = workout.authorId
-  const workoutId = workout.id
+  const authorId = workout.authorId;
+  const workoutId = workout.id;
 
-  const [authorName, setAuthorName] = useState(null)
+  const [authorName, setAuthorName] = useState(null);
 
   const { isLoading } = useQuery(
     ["Username", authorId],
@@ -30,31 +37,31 @@ export default ({ route, navigation }) => {
 
   const editWorkout = useMutation({
     mutationFn: async (values) => {
-
       const { title } = values;
 
       await api.patch(`/patchWorkout/${workoutId}`, {
-        title
+        title,
       });
     },
   });
 
-
-  if (editWorkout.isSuccess) {
-    Alert.alert("Treino editado com sucesso!")
-  }
-  if (editWorkout.isError) {
-    Alert.alert("Erro ao editar o treino!");
-  }
-
+  // if (editWorkout.isSuccess) {
+  //   Alert.alert("Treino editado com sucesso!");
+  // }
+  // if (editWorkout.isError) {
+  //   Alert.alert("Erro ao editar o treino!");
+  // }
 
   return (
     <View className="flex-1 bg-white px-6 py-16 justify-between">
-      <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" />
+      <View className="bg-violet-600 h-48 w-full z-0 absolute top-0 -scale-150" />
 
       <View className="">
         <View className="flex-row items-center mb-12">
-          <Pressable className="absolute" onPress={() => navigation.navigate("Workouts")}>
+          <Pressable
+            className="absolute"
+            onPress={() => navigation.push("Workouts")}
+          >
             <Icon name="ios-chevron-back-sharp" color="#fff" size={40} />
           </Pressable>
           <Text className="text-white font-bold text-4xl mx-auto">Editar</Text>
@@ -66,26 +73,26 @@ export default ({ route, navigation }) => {
             <Text className="italic text-white text-lg font-bold">
               {`${workout.exercises.length} exercícios`}
             </Text>
-          ): (
+          ) : (
             <Text className="italic text-white text-lg font-bold">
-            Nenhum exercício
-          </Text>
+              Nenhum exercício
+            </Text>
           )}
 
           <Text className="text-white text-lg font-bold text-right mt-10">
-           {`de ${authorName}`}
+            {`de ${authorName}`}
           </Text>
         </View>
       </View>
 
       <View className="">
-        <Text className="text-black text-3xl font-bold">Alterações</Text>
         <Formik
           initialValues={{
             title: workout.title,
           }}
+          validationSchema={newWorkoutSchema}
           onSubmit={(values, { resetForm }) => {
-            editWorkout.mutate(values)
+            editWorkout.mutate(values);
             resetForm();
           }}
         >
@@ -104,6 +111,9 @@ export default ({ route, navigation }) => {
               >
                 <Text className="text-xl font-bold">Titulo do treino</Text>
                 <TextInput
+                  maxLength={50}
+                  autoFocus
+                  cursorColor="#7c3aed"
                   className="border-b-2 p-2 text-xl"
                   onChangeText={handleChange("title")}
                   onBlur={handleBlur("title")}

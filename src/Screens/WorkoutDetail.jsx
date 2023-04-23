@@ -7,6 +7,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { Loading } from "../Components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/axios";
+import FABworkout from "../Components/FABworkout";
 
 export default ({ route, navigation }) => {
   const { workout } = route.params;
@@ -29,7 +30,7 @@ export default ({ route, navigation }) => {
         <Pressable onPress={() => navigation.push("Workouts")}>
           <Icon name="ios-chevron-back-sharp" color="#fff" size={40} />
         </Pressable>
-        <Text className="text-white font-bold text-4xl">{workout.title}</Text>
+        <Text className="text-white font-bold text-4xl w-4/6 text-center">{workout.title}</Text>
         <Pressable
           onPress={() =>
             navigation.push("NewExercise", {
@@ -43,12 +44,17 @@ export default ({ route, navigation }) => {
 
       {exercises.length ? (
         <>
-          <View className="flex-row items-center mb-4 px-4">
+        <View className="flex-row justify-between px-6 rounded-full bg-violet-500 p-4 mx-4 mb-10">
+           <View className="flex-row items-center">
             <Text className="text-white text-xl font-semibold mr-2">
               Ordenar por
             </Text>
             <Icon name="chevron-down" color="#fff" size={25} />
           </View>
+          <FABworkout navigation={navigation} workout={workout}/>
+        </View>
+         
+
           <FlatList
             data={exercises}
             renderItem={({ item }) => <ExerciseCard exercise={item} />}

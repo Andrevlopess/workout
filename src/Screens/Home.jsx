@@ -16,13 +16,13 @@ export default ({ navigation }) => {
           <Icon name="user" color="#fff" size={30} />
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Workouts")}
+          onPress={() => navigation.push("Workouts")}
           activeOpacity={0.9}
           className="bg-violet-200 py-14 px-8 justify-center items-center rounded-xl"
         >
           <Text className="text-white text-4xl font-bold">Meus treinos</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </View>
   );
 };
