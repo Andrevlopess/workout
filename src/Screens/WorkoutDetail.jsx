@@ -15,6 +15,8 @@ export default ({ route, navigation }) => {
   const inWorkoutId = workout.id;
 
   const [exercises, setExercises] = useState([]);
+  const [orders, setOrders] = useState(null);
+  const [isOrderByOpen, setIsOrderByOpen] = useState(false);
 
   const { isLoading } = useQuery(
     ["Exercises", inWorkoutId],
@@ -24,13 +26,92 @@ export default ({ route, navigation }) => {
 
   if (isLoading) return <Loading />;
 
+  const orderByParams = [
+    {
+      id: 1,
+      param: "Mais Recentes",
+    },
+    {
+      id: 2,
+      param: "Mais Antigos",
+    },
+    {
+      id: 3,
+      param: "A-Z",
+    },
+    {
+      id: 4,
+      param: "Z-A",
+    },
+  ];
+  const orderByTargetMuscle = [
+    {
+      id: 1,
+      muscle: "Peitoral",
+    },
+    {
+      id: 2,
+      muscle: "Costas",
+    },
+    {
+      id: 3,
+      muscle: "Pernas",
+    },
+    {
+      id: 4,
+      muscle: "Ombros",
+    },
+    {
+      id: 5,
+      muscle: "Tronco",
+    },
+    {
+      id: 6,
+      muscle: "Braços",
+    },
+  ];
+
+  function orderby(orderParam) {
+    let list = [...exercises];
+
+    setOrders(orderParam);
+
+    if (orderParam.param === "Mais Recentes") {
+      setExercises(
+        list.sort((a, b) =>
+          a.createdAt > b.createdAt ? 1 : b.createdAt > a.createdAt ? -1 : 0
+        )
+      );
+    } else if (orderParam.param === "Mais Antigos") {
+      setExercises(
+        list.sort((a, b) =>
+          a.createdAt < b.createdAt ? 1 : b.createdAt < a.createdAt ? -1 : 0
+        )
+      );
+    } else if (orderParam.param === "A-Z") {
+      setExercises(
+        list.sort((a, b) =>
+          a.title > b.title ? 1 : b.title > a.title ? -1 : 0
+        )
+      );
+    } else if (orderParam.param === "Z-A") {
+      setExercises(
+        list.sort((a, b) =>
+          a.title < b.title ? 1 : b.title < a.title ? -1 : 0
+        )
+      );
+    }
+  }
+
   return (
     <View className="flex-1 bg-violet-600 pt-14 pb-6">
       <View className="flex-row justify-between px-4 items-center mb-12">
         <Pressable onPress={() => navigation.push("Workouts")}>
           <Icon name="ios-chevron-back-sharp" color="#fff" size={40} />
         </Pressable>
-        <Text className="text-white font-bold text-4xl w-4/6 text-center">{workout.title}</Text>
+        <Text className="text-white font-bold text-4xl w-4/6 text-center">
+          {workout.title}
+        </Text>
         <Pressable
           onPress={() =>
             navigation.push("NewExercise", {
@@ -42,22 +123,78 @@ export default ({ route, navigation }) => {
         </Pressable>
       </View>
 
-      {exercises.length ? (
-        <>
-        <View className="flex-row justify-between px-6 rounded-full bg-violet-500 p-4 mx-4 mb-10">
-           <View className="flex-row items-center">
+      {/* <FABworkout navigation={navigation} workout={workout} /> */}
+
+      <View className="px-6 shadow-xl rounded-3xl bg-violet-500 p-4 mx-4 mb-10">
+        <View className="flex-row justify-between items-center ">
+          <View className="flex-row items-center">
             <Text className="text-white text-xl font-semibold mr-2">
               Ordenar por
             </Text>
-            <Icon name="chevron-down" color="#fff" size={25} />
+            {orders && (
+              <View className="flex-row items-center bg-violet-600 p-2 rounded-xl m-2 active:bg-violet-500">
+                <Text className="text-md text-white font-semibold mr-2">
+                  {orders.param}
+                </Text>
+                <Pressable 
+                onPress={() => orderby(null)}
+                className="rounded-full bg-violet-500 p-1">
+                  <Icon name="md-close-sharp" color="white" size={15} />
+                </Pressable>
+              </View>
+            )}
           </View>
-          <FABworkout navigation={navigation} workout={workout}/>
+          <Pressable onPress={() => setIsOrderByOpen(!isOrderByOpen)}>
+            {isOrderByOpen ? (
+              <Icon name="chevron-up" color="#fff" size={25} />
+            ) : (
+              <Icon name="chevron-down" color="#fff" size={25} />
+            )}
+          </Pressable>
         </View>
-         
+        {isOrderByOpen && (
+          <View>
+            <FlatList
+              data={orderByParams}
+              renderItem={({ item }) => (
+                <Pressable
+                  onPress={() => orderby(item)}
+                  className=" bg-violet-600 p-2 rounded-xl m-2  active:bg-violet-500"
+                >
+                  <Text className="text-md text-white font-semibold">
+                    {item.param}
+                  </Text>
+                </Pressable>
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+            <Text className="text-md text-white opacity-70 font-semibold">
+              Músculo alvo
+            </Text>
+            <FlatList
+              data={orderByTargetMuscle}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <Pressable className=" bg-violet-600 p-2 rounded-xl m-2">
+                  <Text className="text-md text-white font-semibold">
+                    {item.muscle}
+                  </Text>
+                </Pressable>
+              )}
+              horizontal
+            />
+          </View>
+        )}
+      </View>
 
+      {exercises.length ? (
+        <>
           <FlatList
             data={exercises}
-            renderItem={({ item }) => <ExerciseCard exercise={item} />}
+            renderItem={({ item }) => (
+              <ExerciseCard exercise={item} navigation={navigation} />
+            )}
             keyExtractor={(item) => item.id}
           />
         </>
@@ -74,7 +211,9 @@ export default ({ route, navigation }) => {
             }
             className="bg-violet-500 justify-center items-center p-3 w-full rounded-sm my-5"
           >
-            <Text className="text-white text-lg font-semibold">Adicionar exercícios</Text>
+            <Text className="text-white text-lg font-semibold">
+              Adicionar exercícios
+            </Text>
           </Pressable>
         </View>
       )}

@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/axios";
 
 export default ({ navigation, exercise }) => {
+
   const [isOpen, setIsOpen] = useState();
 
 
@@ -23,7 +24,7 @@ export default ({ navigation, exercise }) => {
         <View className="flex-row">
           <Animatable.View animation="fadeIn" duration={500} delay={100}>
             <Pressable
-              onPress={() => setIsOpen(!isOpen)}
+              onPress={() => navigation.push("EditExercise", {exercise})}
               className="bg-white shadow-md rounded-full p-2 active:bg-violet-50"
             >
               <Icon name="md-create-outline" color="#1e1b4b" size={20} />
@@ -39,11 +40,16 @@ export default ({ navigation, exercise }) => {
           </Animatable.View>
         </View>
       )}
+
       <Pressable
         onPress={() => setIsOpen(!isOpen)}
         className="bg-white shadow-md rounded-full p-2 active:bg-violet-50"
       >
+        {isOpen ?
+        <Icon name="md-close-sharp" color="#7c3aed" size={20} />
+        :   
         <Icon name="pencil-sharp" color="#7c3aed" size={20} />
+      }
       </Pressable>
     </Animatable.View>
   );

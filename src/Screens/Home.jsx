@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
@@ -15,13 +15,12 @@ export default ({ navigation }) => {
           <Text className="text-white font-bold text-4xl">Olá, André</Text>
           <Icon name="user" color="#fff" size={30} />
         </View>
-        <TouchableOpacity
+        <Pressable
           onPress={() => navigation.push("Workouts")}
-          activeOpacity={0.9}
-          className="bg-violet-200 py-14 px-8 justify-center items-center rounded-xl"
+          className="bg-violet-200 py-14 px-8 justify-center items-center rounded-xl active:bg-violet-800"
         >
           <Text className="text-white text-4xl font-bold">Meus treinos</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       </View>
   );
