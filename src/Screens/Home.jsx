@@ -13,7 +13,11 @@ export default ({ navigation }) => {
       <View className="px-6 py-12">
         <View className="flex-row justify-between items-center mb-12">
           <Text className="text-white font-bold text-4xl">Olá, André</Text>
+          <Pressable
+          onPress={() => navigation.navigate("ProfilePage")}
+          >
           <Icon name="user" color="#fff" size={30} />
+          </Pressable>
         </View>
         <Pressable
           onPress={() => navigation.push("Workouts")}

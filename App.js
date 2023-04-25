@@ -13,7 +13,6 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Loading } from "./src/Components/Loading";
 import theme from "./src/Theme/CustomTheme";
 import AuthProvider from "./Contexts/AuthContext";
-import WorkoutProvider from "./Contexts/WorkoutContext";
 
 const queryClient = new QueryClient();
 
@@ -33,9 +32,9 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <NativeBaseProvider theme={theme}>
         <AuthProvider>
-          <WorkoutProvider>
+         
             <Index />
-          </WorkoutProvider>
+       
         </AuthProvider>
       </NativeBaseProvider>
     </QueryClientProvider>

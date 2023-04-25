@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isLogged, setisLogged] = useState(false)
   const [errors, setErrors] = useState("");
 
   useEffect(() => {
@@ -84,7 +85,6 @@ export default function AuthProvider({ children }) {
   async function authLogout() {
     await AsyncStorage.clear();
     setUser(null);
-    console.log("limpado fi ");
   }
 
 
@@ -94,9 +94,7 @@ export default function AuthProvider({ children }) {
         signed: !!user,
         errors,
         user,
-        createNewUser,
-        authLogin,
-        authLogout,
+        setUser
       }}
     >
       {children}

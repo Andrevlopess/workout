@@ -9,6 +9,7 @@ import WorkoutDetail from "../Screens/WorkoutDetail";
 import NewExercise from "../Screens/NewExercise";
 import EditWorkout from "../Screens/EditWorkout";
 import EditExercise from "../Screens/EditExercise";
+import ProfilePage from "../Screens/ProfilePage";
 
 export default (props) => {
   const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ export default (props) => {
       <Stack.Screen name="NewExercise" component={NewExercise} />
       <Stack.Screen name="EditWorkout" component={EditWorkout} />
       <Stack.Screen name="EditExercise" component={EditExercise} />
+      <Stack.Screen name="ProfilePage" component={ProfilePage} />
     </Stack.Navigator>
   );
 };

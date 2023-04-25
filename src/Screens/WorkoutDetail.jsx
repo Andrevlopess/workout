@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import { WorkoutContext } from "../../Contexts/WorkoutContext";
 import { FlatList, Text, View, Pressable } from "react-native";
 import { ExerciseCard } from "../Components/ExerciseCard";
 import { AuthContext } from "../../Contexts/AuthContext";
@@ -8,15 +7,16 @@ import { Loading } from "../Components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/axios";
 import FABworkout from "../Components/FABworkout";
+import * as Animatable from "react-native-animatable";
 
 export default ({ route, navigation }) => {
   const { workout } = route.params;
 
   const inWorkoutId = workout.id;
 
-  const [exercises, setExercises] = useState([]);
   const [orders, setOrders] = useState(null);
-  const [isOrderByOpen, setIsOrderByOpen] = useState(false);
+  const [exercises, setExercises] = useState([]);
+   const [isOrderByOpen, setIsOrderByOpen] = useState(false);
 
   const { isLoading } = useQuery(
     ["Exercises", inWorkoutId],
@@ -42,7 +42,7 @@ export default ({ route, navigation }) => {
     {
       id: 4,
       param: "Z-A",
-    },
+    }
   ];
   const orderByTargetMuscle = [
     {
@@ -71,10 +71,14 @@ export default ({ route, navigation }) => {
     },
   ];
 
+  function resetOrder(){
+    console.log(exercises);
+  }
+
   function orderby(orderParam) {
     let list = [...exercises];
 
-    setOrders(orderParam);
+    setOrders(orderParam)
 
     if (orderParam.param === "Mais Recentes") {
       setExercises(
@@ -102,7 +106,7 @@ export default ({ route, navigation }) => {
       );
     }
   }
-
+  
   return (
     <View className="flex-1 bg-violet-600 pt-14 pb-6">
       <View className="flex-row justify-between px-4 items-center mb-12">
@@ -131,17 +135,21 @@ export default ({ route, navigation }) => {
             <Text className="text-white text-xl font-semibold mr-2">
               Ordenar por
             </Text>
-            {orders && (
-              <View className="flex-row items-center bg-violet-600 p-2 rounded-xl m-2 active:bg-violet-500">
+            {!!orders && (
+              <Animated.View animation="fadeIn">
+                 <View
+                 className="flex-row items-center bg-violet-600 p-2 rounded-xl m-2active:bg-violet-500">
                 <Text className="text-md text-white font-semibold mr-2">
                   {orders.param}
                 </Text>
                 <Pressable 
-                onPress={() => orderby(null)}
+                onPress={() => resetOrder()}
                 className="rounded-full bg-violet-500 p-1">
                   <Icon name="md-close-sharp" color="white" size={15} />
                 </Pressable>
               </View>
+              </Animated.View>
+             
             )}
           </View>
           <Pressable onPress={() => setIsOrderByOpen(!isOrderByOpen)}>

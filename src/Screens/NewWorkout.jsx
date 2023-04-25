@@ -12,7 +12,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import * as Yup from "yup";
 import { FormControl } from "native-base";
 import { Formik } from "formik";
-import { WorkoutContext } from "../../Contexts/WorkoutContext";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../lib/axios";
 import { AuthContext } from "../../Contexts/AuthContext";

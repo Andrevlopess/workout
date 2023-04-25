@@ -6,6 +6,8 @@ import { Formik } from "formik";
 import { AuthContext } from "../../Contexts/AuthContext";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Feather";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../lib/axios";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Email Inválido!").required("Campo Obrigatório"),
@@ -20,6 +22,18 @@ export default ({ navigation }) => {
   if (errors) {
     Alert.alert(errors.title, errors.message);
   }
+
+  const login = useMutation({
+    mutationFn: async (values) => {
+      const { email, password } = values;
+      await api.post("/authentication", {
+        email,
+        password,
+      });
+    }
+    },{
+      onSuccess: () => {}
+    });
 
   return (
     <View className="flex-1 bg-violet-800">

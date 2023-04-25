@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { WorkoutCard } from "../Components/WorkoutCard";
-import { WorkoutContext } from "../../Contexts/WorkoutContext";
 import { View, Text, FlatList, Pressable } from "react-native";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
