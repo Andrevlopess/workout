@@ -10,10 +10,6 @@ export default (props) => {
 
  const {user} = useContext(AuthContext)
 
- 
-
- console.log(isLogged);
-
   return (
     <NavigationContainer>
       {!!user ? <AppRoutes/> : <AuthRoute/>}

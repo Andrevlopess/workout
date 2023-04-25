@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Feather";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../lib/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Email Inválido!").required("Campo Obrigatório"),
@@ -15,25 +16,34 @@ const loginSchema = Yup.object().shape({
 });
 
 export default ({ navigation }) => {
-  const { authLogin, errors } = useContext(AuthContext);
+  const { setUser, errors } = useContext(AuthContext);
 
   const [show, setShow] = useState(false);
 
-  if (errors) {
-    Alert.alert(errors.title, errors.message);
-  }
 
   const login = useMutation({
     mutationFn: async (values) => {
       const { email, password } = values;
-      await api.post("/authentication", {
+
+    
+     const response =  await api.post("/authentication", {
         email,
         password,
       });
+      
+      if(response.data.user){
+      setUser(response.data.user);
+
+      await AsyncStorage.setItem(
+        "@Workout:user",
+        JSON.stringify(response.data.user)
+      );
+      
+      await AsyncStorage.setItem("@Workout:token", response.data.token);
+   }
     }
-    },{
-      onSuccess: () => {}
     });
+
 
   return (
     <View className="flex-1 bg-violet-800">
@@ -55,7 +65,7 @@ export default ({ navigation }) => {
           }}
           validationSchema={loginSchema}
           onSubmit={(values, { resetForm }) => {
-            authLogin(values);
+            login.mutate(values);
           }}
         >
           {({

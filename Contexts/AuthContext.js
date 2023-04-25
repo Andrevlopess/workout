@@ -3,11 +3,11 @@ import { api } from "../src/lib/axios";
 import { Alert } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isLogged, setisLogged] = useState(false)
   const [errors, setErrors] = useState("");
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
       if (storageUser && storageToken) {
         setUser(JSON.parse(storageUser));
       }else{
-        console.log("nada no storage");
+       setUser(null)
       }
     }
 
@@ -91,10 +91,10 @@ export default function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        signed: !!user,
         errors,
         user,
-        setUser
+        setUser,
+        authLogout
       }}
     >
       {children}
