@@ -5,14 +5,14 @@ import { AuthContext } from "../../Contexts/AuthContext";
 
 export default ({ navigation }) => {
   
-  const { authLogout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <View className="flex-1 bg-white">
       <View className="bg-violet-600 h-1/5 w-full z-0 absolute -scale-150" />
       <View className="px-6 py-12">
         <View className="flex-row justify-between items-center mb-12">
-          <Text className="text-white font-bold text-4xl">Olá, André</Text>
+          <Text className="text-white font-bold text-4xl">{`Olá, ${user.name}`}</Text>
           <Pressable
           onPress={() => navigation.navigate("ProfilePage")}
           >

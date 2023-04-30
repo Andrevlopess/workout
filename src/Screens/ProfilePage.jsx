@@ -3,12 +3,15 @@ import { useContext, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { FlatList } from "native-base";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/axios";
+import DeleteAccountModal from "../Components/DeleteAccountModal";
 
 export default ({ navigation }) => {
   const { user, authLogout} = useContext(AuthContext);
   const [workouts, setWorkouts] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const authorId = user.id;
 
@@ -21,6 +24,14 @@ export default ({ navigation }) => {
       },
     }
   );
+
+  const deleteUser = useMutation({
+    mutationFn: async (userId) => {
+      console.log(userId);
+      const response = await api.delete(`/deleteUser/${userId}`,{})
+      console.log(response);
+    }
+  })
 
 
   return (
@@ -76,16 +87,19 @@ export default ({ navigation }) => {
         <View className="flex-row ">
             <Pressable
              onPress={() => {authLogout()}}
-            className="bg-violet-600 my-4 rounded-xl mr-1 flex-1 items-center justify-center active:bg-violet-400 p-4">
+            className="bg-violet-600 my-4 rounded-sm mr-1 flex-1 items-center justify-center active:bg-violet-400 p-4">
                 <Text className="text-white text-xl font-bold">
                     Sair
                 </Text>
             </Pressable>
-            <Pressable className="bg-violet-600 my-4 flex-2 ml-1 rounded-xl items-center justify-center active:bg-violet-400 p-4">
+            <Pressable
+            onPress={() => setModalVisible(!modalVisible)}
+            className="bg-violet-600 my-4 flex-2 ml-1 rounded-sm items-center justify-center active:bg-violet-400 p-4">
                 <Text className="text-white text-xl font-bold">
                     Apagar Conta
                 </Text>
             </Pressable>
+            <DeleteAccountModal modalVisible={modalVisible} closeModal={setModalVisible} user={user}/>
         </View>
       </View>
     </View>

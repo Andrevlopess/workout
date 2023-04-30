@@ -101,3 +101,8 @@ export default function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+
+//* ARRUMAR O BUG DE LOGIN DEPOIS DE UM LOGOU
+//* ARRUMAR O BUG DE FILTRAGEM
+//* MUDAR A TELA DE NOVO TREINO

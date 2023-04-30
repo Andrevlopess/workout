@@ -25,13 +25,14 @@ export default ({ navigation }) => {
     mutationFn: async (values) => {
       const { email, password } = values;
 
-    
      const response =  await api.post("/authentication", {
         email,
         password,
       });
-      
-      if(response.data.user){
+
+      console.log(response.user);
+
+     if(response.data.user){
       setUser(response.data.user);
 
       await AsyncStorage.setItem(
@@ -86,7 +87,7 @@ export default ({ navigation }) => {
                   <Text className="text-lg font-bold">Email</Text>
                   <TextInput
                     className="border-b-2 p-2 text-xl"
-                    onChange={handleChange("email")}
+                    onChangeText={handleChange("email")}
                     onBlur={handleBlur("email")}
                     value={values.email}
                   />
@@ -108,7 +109,7 @@ export default ({ navigation }) => {
                  <View className="flex-row items-center">
                   <TextInput
                     className="border-b-2 p-2 text-xl flex-1 mr-2"
-                    onChange={handleChange("password")}
+                    onChangeText={handleChange("password")}
                     onBlur={handleBlur("password")}
                     value={values.password}
                     secureTextEntry={show ? true : false}
