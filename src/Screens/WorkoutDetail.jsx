@@ -10,6 +10,7 @@ import FABworkout from "../Components/FABworkout";
 import * as Animatable from "react-native-animatable";
 
 export default ({ route, navigation }) => {
+  
   const { workout } = route.params;
 
   const inWorkoutId = workout.id;
